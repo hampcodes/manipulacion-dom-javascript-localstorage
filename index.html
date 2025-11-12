@@ -1,61 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Tareas</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Google Analytics -->
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-4Y68YMWL1V"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-4Y68YMWL1V");
+    </script>
+  </head>
+  <body>
     <div class="container">
-        <h1>Mis Tareas</h1>
-        
-        <!-- Formulario -->
-        <form id="formTarea">
-            <div class="form-group">
-                <input type="text" id="inputTarea" placeholder="Escribe una tarea...">
-                <span class="mensaje-error" id="errorTarea">Por favor, ingresa una tarea</span>
-            </div>
-            <div class="form-group">
-                <input type="date" id="inputFecha">
-                <span class="mensaje-error" id="errorFecha">Por favor, selecciona una fecha</span>
-            </div>
-            <button type="submit">Agregar</button>
-        </form>
+      <h1>Mis Tareas</h1>
 
-        <!-- Filtro de búsqueda -->
-        <div class="filtro-container">
-            <input type="text" id="inputFiltro" placeholder="🔍 Buscar tarea...">
+      <!-- Formulario -->
+      <form id="formTarea">
+        <div class="form-group">
+          <input
+            type="text"
+            id="inpugtTarea"
+            placeholder="Escribe una tarea..."
+          />
+          <span class="mensaje-error" id="errorTarea"
+            >Por favor, ingresa una tarea</span
+          >
         </div>
+        <div class="form-group">
+          <input type="date" id="inputFecha" />
+          <span class="mensaje-error" id="errorFecha"
+            >Por favor, selecciona una fecha</span
+          >
+        </div>
+        <button type="submit">Agregar</button>
+      </form>
 
-        <!-- Tabla -->
-        <table id="tablaTareas">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tarea</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="listaTareas">
-                <!-- Se llenan con JavaScript -->
-            </tbody>
-        </table>
+      <!-- Filtro de búsqueda -->
+      <div class="filtro-container">
+        <input type="text" id="inputFiltro" placeholder="🔍 Buscar tarea..." />
+      </div>
+
+      <!-- Tabla -->
+      <table id="tablaTareas">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tarea</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="listaTareas">
+          <!-- Se llenan con JavaScript -->
+        </tbody>
+      </table>
     </div>
 
     <!-- Modal de confirmación -->
     <div id="modalConfirmacion" class="modal">
-        <div class="modal-content">
-            <h3>Confirmar eliminación</h3>
-            <p>¿Estás seguro de que deseas eliminar esta tarea?</p>
-            <div class="modal-buttons">
-                <button id="btnConfirmar" class="btn-confirmar">Eliminar</button>
-                <button id="btnCancelar" class="btn-cancelar">Cancelar</button>
-            </div>
+      <div class="modal-content">
+        <h3>Confirmar eliminación</h3>
+        <p>¿Estás seguro de que deseas eliminar esta tarea?</p>
+        <div class="modal-buttons">
+          <button id="btnConfirmar" class="btn-confirmar">Eliminar</button>
+          <button id="btnCancelar" class="btn-cancelar">Cancelar</button>
         </div>
+      </div>
     </div>
 
     <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
