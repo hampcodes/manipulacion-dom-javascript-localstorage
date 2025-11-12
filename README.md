@@ -1,5 +1,25 @@
 # Manipulación del DOM y LocalStorage
 
+## Índice
+
+1. [Descripción del Proyecto](#descripción-del-proyecto)
+2. [Características](#características)
+3. [Estructura del Proyecto](#estructura-del-proyecto)
+4. [Conceptos Clave](#conceptos-clave)
+   - [DOM (Document Object Model)](#1-dom-document-object-model)
+   - [LocalStorage](#2-localstorage)
+   - [Eventos](#3-eventos)
+   - [Arrow Functions](#4-arrow-functions)
+   - [Métodos de Arrays](#5-métodos-de-arrays)
+5. [Funciones Importantes del Proyecto](#funciones-importantes-del-proyecto)
+6. [Código Completo](#código-completo)
+7. [Configuración de Google Analytics](#configuración-de-google-analytics)
+8. [Depuración](#depuración)
+9. [Recursos Adicionales](#recursos-adicionales)
+10. [Autor](#autor)
+
+---
+
 ## Descripción del Proyecto
 
 Demo para explicar los conceptos fundamentales de manipulación del DOM y persistencia de datos con LocalStorage. El proyecto implementa un gestor de tareas con operaciones CRUD completas.
@@ -11,6 +31,7 @@ Demo para explicar los conceptos fundamentales de manipulación del DOM y persis
 - Eliminar tareas con confirmación modal
 - Persistencia de datos con LocalStorage
 - Validación de formularios con mensajes de error
+- Integración con Google Analytics para seguimiento de eventos
 
 ## Estructura del Proyecto
 ```
@@ -89,7 +110,53 @@ localStorage.removeItem('clave');
 localStorage.clear();
 ```
 
-**Importante**: LocalStorage solo puede almacenar strings, por eso usamos `JSON.stringify()` para convertir objetos a texto y `JSON.parse()` para convertirlos de vuelta.
+#### JSON.stringify y JSON.parse
+
+LocalStorage solo puede guardar texto (strings). Para guardar objetos o arrays necesitamos convertirlos:
+
+**JSON.stringify() - Para GUARDAR:**
+
+Convierte objetos/arrays de JavaScript a texto.
+```javascript
+// Array de objetos
+let tareas = [
+    {id: 1, texto: 'Comprar pan', fecha: '12/11/2025'},
+    {id: 2, texto: 'Estudiar', fecha: '13/11/2025'}
+];
+
+// Convertir a texto
+let textoJSON = JSON.stringify(tareas);
+
+// Guardar en LocalStorage
+localStorage.setItem('tareas', textoJSON);
+```
+
+**JSON.parse() - Para RECUPERAR:**
+
+Convierte el texto de vuelta a objetos/arrays.
+```javascript
+// Recuperar texto del LocalStorage
+let textoRecuperado = localStorage.getItem('tareas');
+
+// Convertir de vuelta a array
+let tareasRecuperadas = JSON.parse(textoRecuperado);
+
+// Ahora podemos usar los métodos de array
+tareasRecuperadas.forEach(tarea => {
+    console.log(tarea.texto);
+});
+```
+
+**Flujo completo:**
+```
+GUARDAR:
+Array/Object → JSON.stringify() → String → LocalStorage
+[{id: 1}]  →                    → "[{...}]" → 💾
+
+RECUPERAR:
+LocalStorage → String → JSON.parse() → Array/Object
+💾           → "[{...}]" →            → [{id: 1}]
+```
 
 ### 3. Eventos
 
@@ -245,6 +312,15 @@ const mostrarTareas = (tareasFiltradas = tareas) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Tareas</title>
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
 </head>
 <body>
     <div class="container">
@@ -580,6 +656,14 @@ const agregarTarea = (texto, fecha) => {
     tareas.push(tarea);
     guardarEnLocalStorage();
     mostrarTareas();
+    
+    // Enviar evento a Google Analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'agregar_tarea', {
+            'event_category': 'tareas',
+            'event_label': 'Nueva tarea agregada'
+        });
+    }
 };
 
 // Mostrar modal de confirmación
@@ -601,6 +685,14 @@ const eliminarTarea = () => {
         guardarEnLocalStorage();
         mostrarTareas();
         cerrarModal();
+        
+        // Enviar evento a Google Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'eliminar_tarea', {
+                'event_category': 'tareas',
+                'event_label': 'Tarea eliminada'
+            });
+        }
     }
 };
 
@@ -693,6 +785,14 @@ form.addEventListener('submit', (e) => {
 inputFiltro.addEventListener('input', (e) => {
     const tareasFiltradas = filtrarTareas(e.target.value);
     mostrarTareas(tareasFiltradas);
+    
+    // Enviar evento a Google Analytics
+    if (e.target.value.trim() !== '' && typeof gtag !== 'undefined') {
+        gtag('event', 'buscar_tarea', {
+            'event_category': 'tareas',
+            'event_label': 'Búsqueda realizada'
+        });
+    }
 });
 
 // Evento confirmar eliminación
@@ -727,18 +827,134 @@ inputFecha.addEventListener('change', () => {
 cargarTareas();
 ```
 
+## Configuración de Google Analytics
+
+Google Analytics te permite hacer seguimiento de las visitas y eventos en tu aplicación web.
+
+### Paso 1: Crear una cuenta de Google Analytics
+
+1. Ve a [Google Analytics](https://analytics.google.com/)
+2. Inicia sesión con tu cuenta de Google
+3. Haz clic en "Comenzar a medir"
+4. Ingresa el nombre de tu cuenta (ejemplo: "Mi Proyecto Web")
+5. Configura las opciones de uso compartido de datos según tus preferencias
+6. Haz clic en "Siguiente"
+
+### Paso 2: Configurar una propiedad
+
+1. Ingresa el nombre de la propiedad (ejemplo: "Gestor de Tareas")
+2. Selecciona la zona horaria y la moneda
+3. Haz clic en "Siguiente"
+
+### Paso 3: Detalles del negocio
+
+1. Selecciona el sector de tu sitio web
+2. Selecciona el tamaño de tu empresa
+3. Selecciona cómo planeas usar Google Analytics
+4. Haz clic en "Crear"
+5. Acepta los Términos de servicio
+
+### Paso 4: Configurar flujo de datos
+
+1. Selecciona la plataforma "Web"
+2. Ingresa la URL de tu sitio web (ejemplo: https://midominio.com)
+3. Ingresa un nombre para el flujo (ejemplo: "Sitio Web Principal")
+4. Haz clic en "Crear flujo"
+
+### Paso 5: Obtener el ID de medición
+
+1. Después de crear el flujo, verás tu ID de medición (formato: G-XXXXXXXXXX)
+2. Copia este ID
+
+### Paso 6: Instalar el código en tu sitio web
+
+1. Abre tu archivo `index.html`
+2. Pega el siguiente código dentro de la etiqueta `<head>`, antes de cerrarla:
+```html
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+</script>
+```
+
+3. Reemplaza `G-XXXXXXXXXX` con tu ID de medición real
+
+### Paso 7: Configurar eventos personalizados (Opcional)
+
+Para rastrear acciones específicas en tu aplicación, agrega eventos personalizados en tu código JavaScript:
+```javascript
+// Evento al agregar tarea
+gtag('event', 'agregar_tarea', {
+    'event_category': 'tareas',
+    'event_label': 'Nueva tarea agregada'
+});
+
+// Evento al eliminar tarea
+gtag('event', 'eliminar_tarea', {
+    'event_category': 'tareas',
+    'event_label': 'Tarea eliminada'
+});
+
+// Evento al buscar
+gtag('event', 'buscar_tarea', {
+    'event_category': 'tareas',
+    'event_label': 'Búsqueda realizada'
+});
+```
+
+### Paso 8: Verificar la instalación
+
+1. Ve a tu sitio web
+2. Abre Google Analytics
+3. En el menú lateral, ve a "Informes" > "Tiempo real"
+4. Navega por tu sitio web
+5. Deberías ver tu visita en tiempo real en el panel de Analytics
+
+### Paso 9: Explorar informes
+
+Espera 24-48 horas para que Google Analytics recopile suficientes datos. Luego podrás ver:
+
+- Usuarios activos
+- Páginas visitadas
+- Tiempo de permanencia
+- Eventos personalizados
+- Ubicación de los visitantes
+- Dispositivos utilizados
+
+### Notas importantes
+
+- Los datos pueden tardar hasta 24 horas en aparecer en los informes estándar
+- Los informes en tiempo real muestran datos de los últimos 30 minutos
+- Asegúrate de cumplir con las políticas de privacidad (GDPR, CCPA, etc.)
+- Considera agregar un aviso de cookies si operas en la Unión Europea
+
 ## Depuración
 
-Para ver los datos en LocalStorage:
+### Ver datos en LocalStorage
+
 1. Abre las DevTools (F12)
 2. Ve a la pestaña "Application" o "Almacenamiento"
 3. Busca "Local Storage" en el panel izquierdo
 4. Verás las claves `tareas` y `contadorId`
 
-Para limpiar LocalStorage desde la consola:
+### Limpiar LocalStorage
+
+Desde la consola del navegador:
 ```javascript
 localStorage.clear();
 ```
+
+### Verificar eventos de Google Analytics
+
+1. Abre las DevTools (F12)
+2. Ve a la pestaña "Network" (Red)
+3. Filtra por "google-analytics" o "collect"
+4. Realiza acciones en tu aplicación
+5. Verás las solicitudes enviadas a Google Analytics
 
 ## Recursos Adicionales
 
@@ -746,8 +962,9 @@ localStorage.clear();
 - [MDN - Web Storage API](https://developer.mozilla.org/es/docs/Web/API/Web_Storage_API)
 - [MDN - Array Methods](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array)
 - [MDN - Arrow Functions](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+- [Google Analytics - Documentación oficial](https://developers.google.com/analytics)
+- [Google Analytics - Guía de eventos](https://developers.google.com/analytics/devguides/collection/gtagjs/events)
 
 ## Autor
 
-HAMP:Desarrollado con fines educativos
-
+Henry Antonio Mendoza Puerta 
