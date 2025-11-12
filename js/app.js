@@ -51,6 +51,14 @@ const agregarTarea = (texto, fecha) => {
     tareas.push(tarea);
     guardarEnLocalStorage();
     mostrarTareas();
+    
+    // Evento al agregar tarea (Google Analytics)
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'agregar_tarea', {
+            'event_category': 'tareas',
+            'event_label': 'Nueva tarea agregada'
+        });
+    }
 };
 
 // Mostrar modal de confirmación
@@ -72,6 +80,14 @@ const eliminarTarea = () => {
         guardarEnLocalStorage();
         mostrarTareas();
         cerrarModal();
+        
+        // Evento al eliminar tarea (Google Analytics)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'eliminar_tarea', {
+                'event_category': 'tareas',
+                'event_label': 'Tarea eliminada'
+            });
+        }
     }
 };
 
@@ -164,6 +180,14 @@ form.addEventListener('submit', (e) => {
 inputFiltro.addEventListener('input', (e) => {
     const tareasFiltradas = filtrarTareas(e.target.value);
     mostrarTareas(tareasFiltradas);
+    
+    // Evento al buscar (Google Analytics)
+    if (e.target.value.trim() !== '' && typeof gtag !== 'undefined') {
+        gtag('event', 'buscar_tarea', {
+            'event_category': 'tareas',
+            'event_label': 'Búsqueda realizada'
+        });
+    }
 });
 
 // Evento confirmar eliminación
