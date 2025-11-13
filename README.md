@@ -592,7 +592,7 @@ window.location.href = 'login.html';
 
 ---
 
-## Glosario para principiantes
+## Glosario
 
 ### Terminos de HTML
 - **Tag (etiqueta):** Codigo entre `<` y `>` como `<div>`, `<button>`
