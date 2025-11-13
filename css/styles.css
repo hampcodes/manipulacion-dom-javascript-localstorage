@@ -218,3 +218,167 @@ td {
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+
+/* Landing Page */
+.landing {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.landing h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.landing p {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.landing-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 15px 40px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: white;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+
+.btn-secondary:hover {
+    background: #4CAF50;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Autenticación */
+.auth-form {
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+.auth-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+}
+
+.auth-link a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Header Usuario */
+.header-usuario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.usuario-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-logout {
+    background: #f44336;
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+.btn-logout:hover {
+    background: #da190b;
+}
+
+/* Filtro con botón */
+.filtro-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filtro-container input {
+    flex: 1;
+}
+
+.filtro-container .btn-primary {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+/* Formulario vertical */
+form:not(#formTarea) .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.form-buttons button,
+.form-buttons .btn-secondary {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px;
+    display: inline-block;
+}

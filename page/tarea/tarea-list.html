@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tareas</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-usuario">
+            <h1>Mis Tareas</h1>
+            <div class="usuario-info">
+                <span>Hola, <strong id="nombreUsuario"></strong></span>
+                <button id="btnCerrarSesion" class="btn-logout">Cerrar Sesion</button>
+            </div>
+        </div>
+
+        <div class="filtro-container">
+            <input type="text" id="inputFiltro" placeholder="Buscar tarea...">
+            <a href="tarea-form.html" class="btn-primary">Nueva Tarea</a>
+        </div>
+
+        <table id="tablaTareas">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tarea</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="listaTareas">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <h3>Confirmar eliminacion</h3>
+            <p>Estas seguro de que deseas eliminar esta tarea?</p>
+            <div class="modal-buttons">
+                <button id="btnConfirmar" class="btn-confirmar">Eliminar</button>
+                <button id="btnCancelar" class="btn-cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script>verificarSesion();</script>
+    <script src="../../js/tarea.js"></script>
+</body>
+</html>
