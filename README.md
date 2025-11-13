@@ -12,7 +12,7 @@ Un sistema completo de gestion de tareas con autenticacion de usuarios, construi
 6. [Explicacion de las funciones](#explicacion-de-las-funciones)
 7. [Como funciona la autenticacion?](#como-funciona-la-autenticacion)
 8. [Como funciona el sistema de tareas?](#como-funciona-el-sistema-de-tareas)
-9. [Glosario para principiantes](#glosario-para-principiantes)
+9. [Glosario](#glosario-para-principiantes)
 
 ---
 
