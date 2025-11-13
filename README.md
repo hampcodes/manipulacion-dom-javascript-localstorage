@@ -1,6 +1,6 @@
 # Gestor de Tareas con Autenticacion
 
-Un sistema completo de gestion de tareas con autenticacion de usuarios, construido con HTML, CSS y JavaScript vanilla (sin librerias externas). Perfecto para aprender los fundamentos del desarrollo web.
+Un sistema completo de gestion de tareas con autenticacion de usuarios, construido con HTML, CSS y JavaScript vanilla (sin librerias externas).
 
 ## Tabla de Contenidos
 
@@ -12,7 +12,9 @@ Un sistema completo de gestion de tareas con autenticacion de usuarios, construi
 6. [Explicacion de las funciones](#explicacion-de-las-funciones)
 7. [Como funciona la autenticacion?](#como-funciona-la-autenticacion)
 8. [Como funciona el sistema de tareas?](#como-funciona-el-sistema-de-tareas)
-9. [Glosario](#glosario-para-principiantes)
+9. [Glosario](#glosario)
+10. [Consejos para estudiar el codigo](#consejos-para-estudiar-el-codigo)
+11. [Google Analytics - Guia completa](#google-analytics---guia-completa-para-principiantes)
 
 ---
 
@@ -644,6 +646,263 @@ localStorage.getItem('usuarios'); // Ver usuarios registrados
 JSON.parse(localStorage.getItem('usuarios')); // Ver como objetos
 localStorage.clear(); // Borrar todo y empezar de nuevo
 ```
+
+---
+
+## Google Analytics - Guia completa para principiantes
+
+Google Analytics te permite hacer seguimiento de las visitas y eventos en tu aplicacion web. Es GRATIS y muy util para saber cuantas personas usan tu app.
+
+### Que es Google Analytics?
+
+Es una herramienta de Google que te dice:
+- Cuantas personas visitan tu pagina
+- Que paginas visitan mas
+- Cuanto tiempo pasan en tu sitio
+- Desde que paises te visitan
+- Que dispositivos usan (celular, computadora, tablet)
+- Que acciones realizan (eventos personalizados)
+
+### Paso 1: Crear una cuenta de Google Analytics
+
+1. Ve a [Google Analytics](https://analytics.google.com/)
+2. Inicia sesion con tu cuenta de Google (Gmail)
+3. Haz click en "Comenzar a medir"
+4. Ingresa el nombre de tu cuenta (ejemplo: "Mi Proyecto Web")
+5. Configura las opciones de uso compartido de datos segun tus preferencias
+6. Haz click en "Siguiente"
+
+### Paso 2: Configurar una propiedad
+
+Una "propiedad" es tu sitio web o aplicacion.
+
+1. Ingresa el nombre de la propiedad (ejemplo: "Gestor de Tareas")
+2. Selecciona la zona horaria (ejemplo: "Peru" o tu pais)
+3. Selecciona la moneda (ejemplo: "Soles peruanos" o tu moneda)
+4. Haz click en "Siguiente"
+
+### Paso 3: Detalles del negocio
+
+1. Selecciona el sector de tu sitio web (ejemplo: "Tecnologia")
+2. Selecciona el tamano de tu empresa (ejemplo: "Pequena")
+3. Selecciona como planeas usar Google Analytics
+4. Haz click en "Crear"
+5. Acepta los Terminos de servicio
+
+### Paso 4: Configurar flujo de datos
+
+1. Selecciona la plataforma "Web"
+2. Ingresa la URL de tu sitio web (ejemplo: https://midominio.com)
+   - Si solo estas probando en tu computadora, puedes poner: http://localhost
+3. Ingresa un nombre para el flujo (ejemplo: "Sitio Web Principal")
+4. Haz click en "Crear flujo"
+
+### Paso 5: Obtener el ID de medicion
+
+Despues de crear el flujo, veras una pantalla con informacion importante:
+
+1. Busca tu **ID de medicion** (formato: `G-XXXXXXXXXX`)
+2. Copia este ID (lo necesitaras en el siguiente paso)
+
+Ejemplo de ID: `G-4Y68YMWL1V`
+
+### Paso 6: Instalar el codigo en tu sitio web
+
+Ahora debes pegar un codigo en tu HTML para que Google Analytics funcione.
+
+1. Abre tu archivo `index.html`
+2. Busca la etiqueta `<head>`
+3. ANTES de cerrar el `</head>`, pega este codigo:
+
+```html
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+</script>
+```
+
+3. **IMPORTANTE:** Reemplaza `G-XXXXXXXXXX` con tu ID de medicion real
+
+**Ejemplo completo:**
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4Y68YMWL1V"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4Y68YMWL1V');
+    </script>
+</head>
+<body>
+    <!-- Tu contenido aqui -->
+</body>
+</html>
+```
+
+### Paso 7: Configurar eventos personalizados (Opcional pero recomendado)
+
+Los "eventos" son acciones especificas que quieres rastrear, como:
+- Cuando alguien agrega una tarea
+- Cuando alguien elimina una tarea
+- Cuando alguien busca una tarea
+
+Para rastrear estos eventos, agrega este codigo en tus funciones de JavaScript:
+
+```javascript
+// Evento al agregar tarea
+gtag('event', 'agregar_tarea', {
+    'event_category': 'tareas',
+    'event_label': 'Nueva tarea agregada'
+});
+
+// Evento al eliminar tarea
+gtag('event', 'eliminar_tarea', {
+    'event_category': 'tareas',
+    'event_label': 'Tarea eliminada'
+});
+
+// Evento al buscar
+gtag('event', 'buscar_tarea', {
+    'event_category': 'tareas',
+    'event_label': 'Busqueda realizada'
+});
+```
+
+**Donde poner este codigo?**
+
+Por ejemplo, en la funcion `agregarTarea`:
+
+```javascript
+const agregarTarea = (texto, fecha) => {
+    tareas.push({ id: contadorId++, texto, fecha });
+    guardarTareas();
+    mostrarTareas();
+
+    // Enviar evento a Google Analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'agregar_tarea', {
+            'event_category': 'tareas',
+            'event_label': 'Nueva tarea agregada'
+        });
+    }
+};
+```
+
+**Nota:** El `if (typeof gtag !== 'undefined')` verifica que Google Analytics este cargado antes de enviar el evento.
+
+### Paso 8: Verificar la instalacion
+
+Ahora vamos a confirmar que todo funciona:
+
+1. Abre tu sitio web en el navegador
+2. En otra pestana, abre [Google Analytics](https://analytics.google.com/)
+3. Inicia sesion
+4. En el menu lateral izquierdo, haz click en "Informes"
+5. Luego haz click en "Tiempo real" > "Descripcion general"
+6. Vuelve a la pestana de tu sitio web y navega por el (cambia de pagina, agrega tareas, etc.)
+7. En Google Analytics deberia aparecer "1 usuario activo ahora"
+
+Si ves el "1 usuario activo", **felicidades! Google Analytics esta funcionando correctamente**.
+
+### Paso 9: Ver informes completos (Espera 24-48 horas)
+
+Google Analytics necesita tiempo para recopilar datos. Despues de 24-48 horas, podras ver:
+
+**Informes de audiencia:**
+- Cuantos usuarios nuevos vs usuarios recurrentes
+- Ubicacion geografica (paises, ciudades)
+- Datos demograficos (edad, genero - si esta habilitado)
+- Dispositivos (desktop, mobile, tablet)
+- Navegadores y sistemas operativos
+
+**Informes de comportamiento:**
+- Paginas mas visitadas
+- Tiempo promedio en cada pagina
+- Flujo de comportamiento (como navegan los usuarios)
+
+**Informes de eventos (si configuraste eventos personalizados):**
+- Cuantas tareas se agregaron
+- Cuantas tareas se eliminaron
+- Cuantas busquedas se realizaron
+
+### Como ver los eventos personalizados
+
+1. Ve a Google Analytics
+2. Menu lateral > "Informes" > "Interaccion" > "Eventos"
+3. Veras una lista de todos los eventos:
+   - `agregar_tarea`
+   - `eliminar_tarea`
+   - `buscar_tarea`
+4. Haz click en cualquier evento para ver detalles
+
+### Depuracion - Como saber si Google Analytics esta enviando datos
+
+**Metodo 1: Usando la consola del navegador**
+
+1. Abre tu sitio web
+2. Presiona F12 para abrir las DevTools
+3. Ve a la pestana "Network" (Red)
+4. En el filtro, escribe: `collect` o `google-analytics`
+5. Navega por tu sitio o realiza acciones
+6. Deberian aparecer solicitudes a Google Analytics
+
+**Metodo 2: Usando Google Tag Assistant (Extension de Chrome)**
+
+1. Instala la extension "Tag Assistant Legacy" en Chrome
+2. Ve a tu sitio web
+3. Haz click en el icono de Tag Assistant
+4. Deberia mostrar que Google Analytics esta activo
+
+### Notas importantes sobre privacidad
+
+**IMPORTANTE:** Si tu sitio sera usado por personas reales, especialmente en Europa, debes:
+
+1. **Agregar un aviso de cookies:** Informar que usas cookies y Google Analytics
+2. **Politica de privacidad:** Explicar que datos recopilas y como los usas
+3. **Cumplir con GDPR:** Si tienes usuarios en Europa
+4. **Cumplir con CCPA:** Si tienes usuarios en California
+
+**Ejemplo de aviso simple:**
+```html
+<div class="cookie-notice">
+    Este sitio usa Google Analytics para mejorar la experiencia del usuario.
+    Al continuar navegando, aceptas nuestro uso de cookies.
+    <button onclick="this.parentElement.style.display='none'">Aceptar</button>
+</div>
+```
+
+### Resumen rapido
+
+1. Crea cuenta en Google Analytics
+2. Configura una propiedad (tu sitio web)
+3. Copia el ID de medicion (G-XXXXXXXXXX)
+4. Pega el codigo en el `<head>` de tu HTML
+5. (Opcional) Agrega eventos personalizados en JavaScript
+6. Verifica en "Tiempo real" que funciona
+7. Espera 24-48 horas para ver informes completos
+8. Agrega aviso de privacidad si tu sitio es publico
+
+### Recursos adicionales
+
+- [MDN - Document Object Model](https://developer.mozilla.org/es/docs/Web/API/Document_Object_Model)
+- [MDN - Web Storage API](https://developer.mozilla.org/es/docs/Web/API/Web_Storage_API)
+- [MDN - Array Methods](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array)
+- [MDN - Arrow Functions](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+- [Google Analytics - Documentacion oficial](https://developers.google.com/analytics)
+- [Google Analytics - Guia de eventos](https://developers.google.com/analytics/devguides/collection/gtagjs/events)
 
 ---
 
